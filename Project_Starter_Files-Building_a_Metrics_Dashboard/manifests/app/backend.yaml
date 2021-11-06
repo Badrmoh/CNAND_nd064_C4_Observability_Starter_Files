@@ -16,7 +16,7 @@ spec:
         arch: amd64
       containers:
       - name: backend
-        image: ghcr.io/thejaysmith/backend:v1
+        image: badrmoh/backend:v1
         ports:
         - containerPort: 8080
           name: container-port
