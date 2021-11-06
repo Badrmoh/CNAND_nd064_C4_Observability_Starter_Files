@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from prometheus_flask_exporter import PrometheusMetrics
+from flask_opentracing import FlaskTracing
 
 app = Flask(__name__)
 metrics = PrometheusMetrics(app)
@@ -20,6 +21,18 @@ metrics.register_default(
         labels={'status': lambda r: r.status_code}
     )
 )
+
+config = Config(
+    config={
+        'sampler':
+        {'type': 'const',
+         'param': 1},
+        'logging': True,
+        'reporter_batch_size': 1,},
+        service_name="service")
+
+jaeger_tracer = config.initialize_tracer()
+tracing = FlaskTracing(jaeger_tracer, True, app)
 
 @app.route('/')
 def homepage():

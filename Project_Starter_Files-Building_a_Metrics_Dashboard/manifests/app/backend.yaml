@@ -2,6 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend-app
+  annotations:
+    sidecar.jaegertracing.io/inject: 'true'
+    prometheus.io/scrape: "true"
+    prometheus.io/path: /metrics
+    prometheus.io/port: container-port
 spec:
   replicas: 3
   selector:
@@ -16,7 +21,7 @@ spec:
         arch: amd64
       containers:
       - name: backend
-        image: badrmoh/backend:v1
+        image: badrmoh/backend:v2
         ports:
         - containerPort: 8080
           name: container-port
