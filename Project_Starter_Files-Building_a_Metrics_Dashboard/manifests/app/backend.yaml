@@ -1,15 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-app
+  name: backend
   annotations:
     sidecar.jaegertracing.io/inject: 'true'
-    prometheus.io/scrape: "true"
-    prometheus.io/path: /metrics
-    prometheus.io/port: container-port
   labels:
-    name: backend
-    release: prometheus
+    app: backend
 spec:
   replicas: 3
   selector:
@@ -24,7 +20,8 @@ spec:
         arch: amd64
       containers:
       - name: backend
-        image: badrmoh/backend:v2
+        image: badrmoh/backend:1
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
           name: container-port
@@ -33,6 +30,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: backend
+  labels: 
+    app: backend
 spec:
   selector:
     app: backend
@@ -61,4 +60,3 @@ spec:
   namespaceSelector:
     matchNames:
     - default
-    - observability
