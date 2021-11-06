@@ -29,7 +29,8 @@ config = Config(
         {'type': 'const',
          'param': 1},
         'logging': True,
-        'reporter_batch_size': 1,},
+        'reporter_batch_size': 1,
+        {'reporting_host': 'jaeger-instance'}},
         service_name="frontend")
 
 jaeger_tracer = config.initialize_tracer()

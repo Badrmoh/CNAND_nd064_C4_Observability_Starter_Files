@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: backend
   annotations:
-    sidecar.jaegertracing.io/inject: 'true'
+    sidecar.jaegertracing.io/inject: "jaeger-instance"
   labels:
     app: backend
 spec:
@@ -40,23 +40,3 @@ spec:
       targetPort: container-port
       name: service-port
   type: LoadBalancer
----
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: backend
-  namespace: monitoring
-  labels:
-    app: backend
-    release: prometheus
-spec:
-  selector:
-    matchLabels:
-      app: backend
-  endpoints:
-  - port: service-port
-    path: /metrics
-    interval: 15s
-  namespaceSelector:
-    matchNames:
-    - default
