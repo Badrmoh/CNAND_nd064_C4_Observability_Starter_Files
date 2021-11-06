@@ -5,6 +5,9 @@ from flask_pymongo import PyMongo
 from prometheus_flask_exporter import PrometheusMetrics
 from flask_opentracing import FlaskTracing
 from jaeger_client import Config
+from os import getenv
+
+JAEGER_HOST = getenv('JAEGER_HOST', 'localhost')
 
 app = Flask(__name__)
 metrics = PrometheusMetrics(app)
@@ -19,7 +22,7 @@ config = Config(
          'param': 1},
         'logging': True,
         'reporter_batch_size': 1,
-        'local_agent': {'reporting_host': 'jaeger-instance'},},
+        'local_agent': {'reporting_host': JAEGER_HOST},},
         service_name="backend")
 
 jaeger_tracer = config.initialize_tracer()

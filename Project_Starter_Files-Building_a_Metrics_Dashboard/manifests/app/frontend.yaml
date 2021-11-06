@@ -26,6 +26,9 @@ spec:
         ports:
         - containerPort: 8080
           name: container-port
+      - env:
+        - name: JAEGER_HOST
+          value: simpletest-agent
 ---
 apiVersion: v1
 kind: Service
@@ -41,3 +44,23 @@ spec:
       targetPort: container-port
       name: service-port
   type: LoadBalancer
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: frontend
+  namespace: monitoring
+  labels:
+    app: frontend
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  endpoints:
+  - port: service-port
+    path: /metrics
+    interval: 15s
+  namespaceSelector:
+    matchNames:
+    - default

@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: backend
   annotations:
-    sidecar.jaegertracing.io/inject: "jaeger-instance"
+    sidecar.jaegertracing.io/inject: 'jaeger-instance'
   labels:
     app: backend
 spec:
@@ -20,11 +20,14 @@ spec:
         arch: amd64
       containers:
       - name: backend
-        image: badrmoh/backend:1
+        image: badrmoh/backend:test
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
           name: container-port
+      - env:
+        - name: JAEGER_HOST
+          value: simpletest-agent
 ---
 apiVersion: v1
 kind: Service
@@ -40,3 +43,23 @@ spec:
       targetPort: container-port
       name: service-port
   type: LoadBalancer
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: backend
+  namespace: monitoring
+  labels:
+    app: backend
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  endpoints:
+  - port: service-port
+    path: /metrics
+    interval: 15s
+  namespaceSelector:
+    matchNames:
+    - default
