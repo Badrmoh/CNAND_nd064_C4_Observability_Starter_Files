@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from prometheus_flask_exporter import PrometheusMetrics
 from flask_opentracing import FlaskTracing
+from jaeger_client import Config
 
 app = Flask(__name__)
 metrics = PrometheusMetrics(app)

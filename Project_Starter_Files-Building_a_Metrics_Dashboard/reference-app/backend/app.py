@@ -4,6 +4,7 @@ import pymongo
 from flask_pymongo import PyMongo
 from prometheus_flask_exporter import PrometheusMetrics
 from flask_opentracing import FlaskTracing
+from jaeger_client import Config
 
 app = Flask(__name__)
 metrics = PrometheusMetrics(app)

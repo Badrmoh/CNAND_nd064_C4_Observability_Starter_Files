@@ -7,6 +7,9 @@ metadata:
     prometheus.io/scrape: "true"
     prometheus.io/path: /metrics
     prometheus.io/port: container-port
+  labels:
+    name: backend
+    release: prometheus
 spec:
   replicas: 3
   selector:
@@ -29,7 +32,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend-service
+  name: backend
 spec:
   selector:
     app: backend
@@ -58,3 +61,4 @@ spec:
   namespaceSelector:
     matchNames:
     - default
+    - observability
