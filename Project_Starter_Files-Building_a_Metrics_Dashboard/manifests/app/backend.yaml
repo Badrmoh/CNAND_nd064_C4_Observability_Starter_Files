@@ -12,11 +12,14 @@ spec:
       labels:
         app: backend
     spec:
+      nodeSelector:
+        arch: amd64
       containers:
       - name: backend
         image: ghcr.io/thejaysmith/backend:v1
         ports:
         - containerPort: 8080
+          name: container-port
 ---
 apiVersion: v1
 kind: Service
@@ -26,6 +29,27 @@ spec:
   selector:
     app: backend
   ports:
-    - port: 80
-      targetPort: 8080
+    - port: 8888
+      targetPort: container-port
+      name: service-port
   type: LoadBalancer
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: backend
+  namespace: monitoring
+  labels:
+    app: backend
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  endpoints:
+  - port: service-port
+    path: /metrics
+    interval: 15s
+  namespaceSelector:
+    matchNames:
+    - default

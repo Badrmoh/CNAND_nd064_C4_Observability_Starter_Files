@@ -2,19 +2,34 @@
 
 ## Verify the monitoring installation
 
-*TODO:* run `kubectl` command to show the running pods and services for all components. Take a screenshot of the output and include it here to verify the installation
+<p align="center">
+<img src="./answer-img/all.png">
+</p>
 
 ## Setup the Jaeger and Prometheus source
-*TODO:* Expose Grafana to the internet and then setup Prometheus as a data source. Provide a screenshot of the home page after logging into Grafana.
+<p align="center">
+<img src="./answer-img/grafana-home.png">
+</p>
 
 ## Create a Basic Dashboard
-*TODO:* Create a dashboard in Grafana that shows Prometheus as a source. Take a screenshot and include it here.
+<p align="center">
+<img src="./answer-img/prom-dashboard.png">
+</p>
 
 ## Describe SLO/SLI
-*TODO:* Describe, in your own words, what the SLIs are, based on an SLO of *monthly uptime* and *request response time*.
+SLI is a quantitive measureable metric of the service level that tells about the actual performance compared to the defined SLO. For this context:
+Monthly Uptime SLO can be achieved by measuring the Uptime over the month, and maintain the total uptime ratio as the SLO indicates. However, what is measured here is the SLI. 
+Request Response Time SLO can be achieved by measuring the precentage of requests that achieve a certain Request Response Time as defined in the SLO, and maintain that ratio to be below a certain level as the SLO indicates. The actual measured ration is the SLI.
+SLO is the target value over a period of time of a service level that an SLI measures.
+
+Basically, SLI <= SLO.
 
 ## Creating SLI metrics.
-*TODO:* It is important to know why we want to measure certain metrics for our customer. Describe in detail 5 metrics to measure these SLIs. 
+1. Total instance uptime in hours per month
+2. Total instance downtime in hours per month
+3. Number of requests with 20x return codes
+4. Number of requests with 40x or 50x return codes
+5. Request response time
 
 ## Create a Dashboard to measure our SLIs
 *TODO:* Create a dashboard to measure the uptime of the frontend and backend services We will also want to measure to measure 40x and 50x errors. Create a dashboard that show these values over a 24 hour period and take a screenshot.

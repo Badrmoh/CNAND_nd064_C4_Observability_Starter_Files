@@ -12,6 +12,8 @@ spec:
       labels:
         app: trial
     spec:
+      nodeSelector:
+        arch: amd64
       containers:
       - name: trial
         image: ghcr.io/thejaysmith/trial:v1
@@ -26,6 +28,6 @@ spec:
   selector:
     app: trial
   ports:
-    - port: 8080
+    - port: 8880
       targetPort: 8080
   type: LoadBalancer
