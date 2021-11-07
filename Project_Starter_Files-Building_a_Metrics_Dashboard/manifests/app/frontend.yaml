@@ -26,9 +26,9 @@ spec:
         ports:
         - containerPort: 8080
           name: container-port
-      - env:
-        - name: JAEGER_HOST
-          value: simpletest-agent
+        env:
+        - name: 'JAEGER_HOST'
+          value: 'jaeger-instance-agent.observability.svc.cluster.local'
 ---
 apiVersion: v1
 kind: Service
